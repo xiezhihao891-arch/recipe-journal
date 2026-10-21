@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="志豪的手账食谱本 — 纸质手账风的私人食谱日记" />
+  <meta name="theme-color" content="#f7f0e6" />
+  <title>手账食谱 · 志豪的厨房日记</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📔</text></svg>" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <a href="#/" class="brand" data-nav="home" aria-label="回到首页">
+        <span class="brand-mark" aria-hidden="true">书</span>
+        <span class="brand-text">手账食谱</span>
+      </a>
+      <div class="header-actions">
+        <button type="button" class="btn-icon" id="btn-new-recipe" title="新建食谱" aria-label="新建食谱">✏️</button>
+        <button type="button" class="btn-icon" id="btn-settings" title="设置" aria-label="设置">⚙️</button>
+      </div>
+    </header>
+
+    <!-- ===== HOME ===== -->
+    <section id="view-home" class="view active" aria-label="封面与食谱列表">
+      <div class="cover-hero">
+        <h1 class="cover-title">志豪的厨房日记</h1>
+        <p class="cover-sub">把每一次下厨，贴进这本温暖的手账里 ✿</p>
+        <div class="cover-stats" id="cover-stats"></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="search-input" placeholder="搜索菜名、标签、备注…" autocomplete="off" aria-label="搜索食谱" />
+        </div>
+        <select id="sort-select" class="select-sort" aria-label="排序方式">
+          <option value="updated">最近更新</option>
+          <option value="created">最近添加</option>
+          <option value="rating">评分优先</option>
+          <option value="title">按名称</option>
+          <option value="cookTime">烹饪时间</option>
+        </select>
+        <div class="filter-row" id="filter-chips" role="group" aria-label="按标签筛选"></div>
+      </div>
+
+      <div id="recipe-grid" class="recipe-grid" role="list"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <div class="big-emoji" aria-hidden="true">📔✨</div>
+        <h2>还是空白的一页</h2>
+        <p>贴上第一道菜，开始你的手账厨房之旅吧</p>
+        <button type="button" class="btn btn-primary" id="btn-empty-new">＋ 写下第一道菜</button>
+      </div>
+    </section>
+
+    <!-- ===== DETAIL ===== -->
+    <section id="view-detail" class="view" aria-label="食谱详情"></section>
+
+    <!-- ===== EDITOR ===== -->
+    <section id="view-editor" class="view" aria-label="编辑食谱">
+      <div class="page-panel" style="margin-bottom:1rem">
+        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-mint)"></div>
+        <div class="washi-corner washi-tr"></div>
+        <h1 class="detail-title" id="editor-heading">写一道新菜</h1>
+        <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:1rem">想怎么写就怎么写 — 字段都是可选的，自由度交给你 ✿</p>
+
+        <form id="editor-form" class="editor-form" novalidate>
+          <input type="hidden" id="ed-id" />
+
+          <div class="field">
+            <label for="ed-title">菜名 *</label>
+            <input type="text" id="ed-title" required maxlength="80" placeholder="例如：番茄炒蛋 / Tomato Egg Stir-fry" />
+          </div>
+
+          <div class="field">
+            <span class="field-label">封面</span>
+            <div class="cover-picker">
+              <div class="emoji-grid" id="emoji-grid" role="group" aria-label="选择表情封面"></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;align-items:center">
+              <input type="url" id="ed-image-url" placeholder="或粘贴图片 URL…" style="flex:1;min-width:160px;padding:0.55rem 0.75rem;border:1.5px solid var(--paper-deep);border-radius:8px;background:var(--cream)" />
+              <label class="btn btn-ghost btn-sm" for="ed-image-file">上传图片</label>
+              <input type="file" id="ed-image-file" class="sr-only" accept="image/*" />
+              <img id="ed-image-preview" class="preview-thumb" alt="" hidden />
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">手账点缀色</span>
+            <div class="color-swatches" id="color-swatches" role="group" aria-label="选择点缀色"></div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">和纸胶带风格</span>
+            <div class="color-swatches" id="tape-swatches" role="group" aria-label="选择胶带颜色"></div>
+          </div>
+
+          <div class="field-row triple">
+            <div class="field">
+              <label for="ed-cook-time">烹饪时间（分钟）</label>
+              <input type="number" id="ed-cook-time" min="0" max="999" placeholder="30" />
+            </div>
+            <div class="field">
+              <label for="ed-servings">份量</label>
+              <input type="text" id="ed-servings" maxlength="20" placeholder="2 人份" />
+            </div>
+            <div class="field">
+              <label for="ed-difficulty">难度</label>
+              <select id="ed-difficulty">
+                <option value="">不设置</option>
+                <option value="简单">简单</option>
+                <option value="中等">中等</option>
+                <option value="进阶">进阶</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="ed-category">分类</label>
+              <input type="text" id="ed-category" maxlength="30" placeholder="家常菜 / 早餐 / 汤…" list="category-suggestions" />
+              <datalist id="category-suggestions">
+                <option value="家常菜" />
+                <option value="早餐" />
+                <option value="汤羹" />
+                <option value="主食" />
+                <option value="甜品" />
+                <option value="西式" />
+                <option value="快手菜" />
+              </datalist>
+            </div>
+            <div class="field">
+              <label for="ed-last-cooked">上次做的日期</label>
+              <input type="date" id="ed-last-cooked" />
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">评分</span>
+            <div class="star-picker" id="star-picker" role="group" aria-label="星级评分"></div>
+            <input type="hidden" id="ed-rating" value="0" />
+          </div>
+
+          <div class="field">
+            <span class="field-label">标签贴纸</span>
+            <div class="tag-input-row" id="tag-editor">
+              <div id="tag-chips-edit"></div>
+              <input type="text" id="ed-tag-input" maxlength="20" placeholder="输入后回车添加…" aria-label="添加标签" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="field-label">食材清单</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-add-ing">＋ 加一行</button>
+            </div>
+            <div class="dyn-list" id="ing-list"></div>
+          </div>
+
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="field-label">步骤</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-add-step">＋ 加一步</button>
+            </div>
+            <div class="dyn-list" id="step-list"></div>
+          </div>
+
+          <div class="field">
+            <label for="ed-notes">个人笔记 / 备忘</label>
+            <textarea id="ed-notes" rows="4" placeholder="随手记：火候心得、家人口味、下次改进…"></textarea>
+          </div>
+
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="field-label">自由章节（可选）</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-add-section">＋ 加章节</button>
+            </div>
+            <div class="dyn-list" id="section-list"></div>
+          </div>
+
+          <div class="editor-actions">
+            <button type="submit" class="btn btn-primary">💾 保存到手账</button>
+            <button type="button" class="btn btn-ghost" id="btn-editor-cancel">取消</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-editor-delete" hidden>删除</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS ===== -->
+    <section id="view-settings" class="view" aria-label="设置">
+      <div class="settings-card">
+        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-blue)"></div>
+        <h2>📦 数据备份</h2>
+        <p>所有食谱保存在本机浏览器的 localStorage。换设备前请先导出 JSON。</p>
+        <div class="actions">
+          <button type="button" class="btn btn-sage" id="btn-export">导出 JSON</button>
+          <label class="btn btn-ghost" for="import-file">导入 JSON</label>
+          <input type="file" id="import-file" class="sr-only" accept="application/json,.json" />
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2>🌱 示例食谱</h2>
+        <p>载入 3 道家常菜（番茄炒蛋、红烧肉、简易意面）来体验手账效果。已有同名菜时会跳过。</p>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="btn-seed">载入示例</button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2>ℹ️ 关于</h2>
+        <p>
+          <strong>手账食谱</strong> · 为志豪准备的私人厨房日记<br />
+          数据 Schema 版本：<span id="schema-version-label">1</span><br />
+          当前共有 <span id="settings-count">0</span> 道食谱
+        </p>
+      </div>
+
+      <div class="settings-card">
+        <h2>⚠️ 危险区域</h2>
+        <p>清空后无法恢复（除非你已导出备份）。</p>
+        <div class="actions">
+          <button type="button" class="btn btn-danger" id="btn-clear">清空全部数据</button>
+        </div>
+        <p class="warning-text">此操作不可撤销</p>
+      </div>
+    </section>
+  </div>
+
+  <nav id="bottom-nav" aria-label="主导航">
+    <button type="button" class="nav-btn active" data-nav="home">
+      <span class="nav-ico" aria-hidden="true">📔</span>
+      <span>封面</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="new">
+      <span class="nav-ico" aria-hidden="true">✏️</span>
+      <span>写菜</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="settings">
+      <span class="nav-ico" aria-hidden="true">⚙️</span>
+      <span>设置</span>
+    </button>
+  </nav>
+
+  <button type="button" class="btn btn-primary cook-exit" id="btn-exit-cook">退出烹饪模式</button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal">
+      <h3 id="modal-title">确认</h3>
+      <p id="modal-body"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="modal-cancel">取消</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
