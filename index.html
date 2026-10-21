@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="志豪的手账食谱本 — 纸质手账风的私人食谱日记" />
-  <meta name="theme-color" content="#f7f0e6" />
-  <title>手账食谱 · 志豪的厨房日记</title>
+  <meta name="description" content="本草膳录 — 药食同源 · 共享食谱手账，记录传统食养方与日常膳饮" />
+  <meta name="theme-color" content="#f3eee4" />
+  <title>本草膳录 · 药食同源 · 共享食谱</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📔</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
 </head>
 <body>
+  <div id="local-banner" class="local-banner" hidden role="status">
+    <span class="local-banner-ico" aria-hidden="true">🍃</span>
+    <span class="local-banner-msg">当前为浏览器本地稿；联网共享开启后所有人可共同编辑</span>
+  </div>
+
   <div id="app">
     <header class="app-header">
       <a href="#/" class="brand" data-nav="home" aria-label="回到首页">
-        <span class="brand-mark" aria-hidden="true">书</span>
-        <span class="brand-text">手账食谱</span>
+        <span class="brand-mark" aria-hidden="true">草</span>
+        <span class="brand-text">本草膳录</span>
       </a>
       <div class="header-actions">
         <button type="button" class="btn-icon" id="btn-new-recipe" title="新建食谱" aria-label="新建食谱">✏️</button>
@@ -28,15 +33,17 @@
     <!-- ===== HOME ===== -->
     <section id="view-home" class="view active" aria-label="封面与食谱列表">
       <div class="cover-hero">
-        <h1 class="cover-title">志豪的厨房日记</h1>
-        <p class="cover-sub">把每一次下厨，贴进这本温暖的手账里 ✿</p>
+        <div class="cover-motif" aria-hidden="true"></div>
+        <h1 class="cover-title">本草膳录</h1>
+        <p class="cover-sub">药食同源 · 共享食谱</p>
+        <p class="cover-tagline">以手账温度，记一瓢食养方。内容仅供传统食养参考，不构成医疗建议。</p>
         <div class="cover-stats" id="cover-stats"></div>
       </div>
 
       <div class="toolbar">
         <div class="search-wrap">
           <span class="search-icon" aria-hidden="true">🔍</span>
-          <input type="search" id="search-input" placeholder="搜索菜名、标签、备注…" autocomplete="off" aria-label="搜索食谱" />
+          <input type="search" id="search-input" placeholder="搜索膳名、药材、标签…" autocomplete="off" aria-label="搜索食谱" />
         </div>
         <select id="sort-select" class="select-sort" aria-label="排序方式">
           <option value="updated">最近更新</option>
@@ -50,10 +57,10 @@
 
       <div id="recipe-grid" class="recipe-grid" role="list"></div>
       <div id="empty-state" class="empty-state" hidden>
-        <div class="big-emoji" aria-hidden="true">📔✨</div>
-        <h2>还是空白的一页</h2>
-        <p>贴上第一道菜，开始你的手账厨房之旅吧</p>
-        <button type="button" class="btn btn-primary" id="btn-empty-new">＋ 写下第一道菜</button>
+        <div class="big-emoji" aria-hidden="true">🌿📜</div>
+        <h2>膳录尚空</h2>
+        <p>写下第一道药食同源方，开启共享手账</p>
+        <button type="button" class="btn btn-primary" id="btn-empty-new">＋ 录下第一道</button>
       </div>
     </section>
 
@@ -63,17 +70,17 @@
     <!-- ===== EDITOR ===== -->
     <section id="view-editor" class="view" aria-label="编辑食谱">
       <div class="page-panel" style="margin-bottom:1rem">
-        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-mint)"></div>
+        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-sage)"></div>
         <div class="washi-corner washi-tr"></div>
-        <h1 class="detail-title" id="editor-heading">写一道新菜</h1>
-        <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:1rem">想怎么写就怎么写 — 字段都是可选的，自由度交给你 ✿</p>
+        <h1 class="detail-title" id="editor-heading">录一道新膳</h1>
+        <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:1rem">字段皆可留白；可用自由章节写「功效 / 宜忌」等食养提示（传统食养参考）✿</p>
 
         <form id="editor-form" class="editor-form" novalidate>
           <input type="hidden" id="ed-id" />
 
           <div class="field">
-            <label for="ed-title">菜名 *</label>
-            <input type="text" id="ed-title" required maxlength="80" placeholder="例如：番茄炒蛋 / Tomato Egg Stir-fry" />
+            <label for="ed-title">膳名 *</label>
+            <input type="text" id="ed-title" required maxlength="80" placeholder="例如：枸杞红枣茶 / 山药薏米粥" />
           </div>
 
           <div class="field">
@@ -101,12 +108,12 @@
 
           <div class="field-row triple">
             <div class="field">
-              <label for="ed-cook-time">烹饪时间（分钟）</label>
-              <input type="number" id="ed-cook-time" min="0" max="999" placeholder="30" />
+              <label for="ed-cook-time">用时（分钟）</label>
+              <input type="number" id="ed-cook-time" min="0" max="999" placeholder="20" />
             </div>
             <div class="field">
               <label for="ed-servings">份量</label>
-              <input type="text" id="ed-servings" maxlength="20" placeholder="2 人份" />
+              <input type="text" id="ed-servings" maxlength="20" placeholder="2–3 碗" />
             </div>
             <div class="field">
               <label for="ed-difficulty">难度</label>
@@ -122,15 +129,14 @@
           <div class="field-row">
             <div class="field">
               <label for="ed-category">分类</label>
-              <input type="text" id="ed-category" maxlength="30" placeholder="家常菜 / 早餐 / 汤…" list="category-suggestions" />
+              <input type="text" id="ed-category" maxlength="30" placeholder="茶饮 / 粥膳 / 汤羹…" list="category-suggestions" />
               <datalist id="category-suggestions">
-                <option value="家常菜" />
-                <option value="早餐" />
+                <option value="茶饮" />
+                <option value="粥膳" />
                 <option value="汤羹" />
-                <option value="主食" />
-                <option value="甜品" />
-                <option value="西式" />
-                <option value="快手菜" />
+                <option value="膳饮" />
+                <option value="点心" />
+                <option value="四季调养" />
               </datalist>
             </div>
             <div class="field">
@@ -170,20 +176,20 @@
           </div>
 
           <div class="field">
-            <label for="ed-notes">个人笔记 / 备忘</label>
-            <textarea id="ed-notes" rows="4" placeholder="随手记：火候心得、家人口味、下次改进…"></textarea>
+            <label for="ed-notes">手账备忘</label>
+            <textarea id="ed-notes" rows="4" placeholder="火候心得、口味调整、下次改进…"></textarea>
           </div>
 
           <div class="field">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span class="field-label">自由章节（可选）</span>
+              <span class="field-label">自由章节（功效 / 宜忌等）</span>
               <button type="button" class="btn btn-ghost btn-sm" id="btn-add-section">＋ 加章节</button>
             </div>
             <div class="dyn-list" id="section-list"></div>
           </div>
 
           <div class="editor-actions">
-            <button type="submit" class="btn btn-primary">💾 保存到手账</button>
+            <button type="submit" class="btn btn-primary">💾 保存到膳录</button>
             <button type="button" class="btn btn-ghost" id="btn-editor-cancel">取消</button>
             <button type="button" class="btn btn-danger btn-sm" id="btn-editor-delete" hidden>删除</button>
           </div>
@@ -194,9 +200,9 @@
     <!-- ===== SETTINGS ===== -->
     <section id="view-settings" class="view" aria-label="设置">
       <div class="settings-card">
-        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-blue)"></div>
+        <div class="washi-corner washi-tl" style="--tape-c:var(--tape-celadon)"></div>
         <h2>📦 数据备份</h2>
-        <p>所有食谱保存在本机浏览器的 localStorage。换设备前请先导出 JSON。</p>
+        <p>本地模式下食谱保存在本机浏览器。换设备前请先导出 JSON；联网共享开启后可多人共同编辑。</p>
         <div class="actions">
           <button type="button" class="btn btn-sage" id="btn-export">导出 JSON</button>
           <label class="btn btn-ghost" for="import-file">导入 JSON</label>
@@ -205,8 +211,8 @@
       </div>
 
       <div class="settings-card">
-        <h2>🌱 示例食谱</h2>
-        <p>载入 3 道家常菜（番茄炒蛋、红烧肉、简易意面）来体验手账效果。已有同名菜时会跳过。</p>
+        <h2>🌱 示例膳方</h2>
+        <p>载入 3 道药食同源示例（枸杞红枣茶、山药薏米粥、生姜红糖水）。已有同名时会跳过。</p>
         <div class="actions">
           <button type="button" class="btn btn-primary" id="btn-seed">载入示例</button>
         </div>
@@ -215,9 +221,11 @@
       <div class="settings-card">
         <h2>ℹ️ 关于</h2>
         <p>
-          <strong>手账食谱</strong> · 为志豪准备的私人厨房日记<br />
+          <strong>本草膳录</strong> · 药食同源 · 共享食谱<br />
+          手账风公共项目，内容为传统食养参考，非医疗建议。<br />
           数据 Schema 版本：<span id="schema-version-label">1</span><br />
-          当前共有 <span id="settings-count">0</span> 道食谱
+          当前共有 <span id="settings-count">0</span> 道食谱<br />
+          存储模式：<span id="store-mode-label">本地</span>
         </p>
       </div>
 
@@ -234,12 +242,12 @@
 
   <nav id="bottom-nav" aria-label="主导航">
     <button type="button" class="nav-btn active" data-nav="home">
-      <span class="nav-ico" aria-hidden="true">📔</span>
+      <span class="nav-ico" aria-hidden="true">🌿</span>
       <span>封面</span>
     </button>
     <button type="button" class="nav-btn" data-nav="new">
       <span class="nav-ico" aria-hidden="true">✏️</span>
-      <span>写菜</span>
+      <span>录膳</span>
     </button>
     <button type="button" class="nav-btn" data-nav="settings">
       <span class="nav-ico" aria-hidden="true">⚙️</span>
@@ -262,6 +270,7 @@
     </div>
   </div>
 
+  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

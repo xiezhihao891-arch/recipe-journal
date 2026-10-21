@@ -1,62 +1,73 @@
-# 手账食谱 · 志豪的厨房日记
+# 本草膳录 · 药食同源 · 共享食谱
 
-纸质手账 / scrapbook 风格的私人食谱本：暖色牛皮纸底、和纸胶带、拍立得相框、手写标题字体。数据全部存在浏览器本地，可离线使用。
+手账 / scrapbook 风格的**公共**药食同源食谱本：宣纸感底色、青瓷绿与朱砂点缀、竹叶淡影。适合共同记录茶饮、粥膳与家常食养方。
+
+> **传统食养参考，不构成医疗建议。** 请勿当作诊疗、用药或替代专业医疗意见。
+
+## 公开 wiki（当前线上模式）
+
+本站已接入 **Supabase** 作为公共共享后端：任何人打开站点链接即可浏览、新增、编辑与删除膳方（RLS 对 `anon` 开放 SELECT/INSERT/UPDATE/DELETE，属有意设计）。
+
+- 线上地址：https://xiezhihao891-arch.github.io/recipe-journal/
+- 数据表：`public.recipes`（`id` / `title` / `data` jsonb）
+- 前端仅使用 **anon** 公钥；切勿把 `service_role` 写进仓库或页面
+
+若需改回仅本机草稿，将 `config.js` 中 `type` 设为 `"local"`（或清空 `url` / `anonKey`）。
 
 ## 功能一览
 
-- **封面**：食谱卡片墙、搜索、标签/分类筛选、多种排序；空白时引导写第一道菜
-- **详情**：左右书页布局；食材勾选划线、步骤、评分、个人备忘、自由章节；**烹饪模式**放大步骤
-- **编辑器**：高自由度——任意增删食材/步骤/章节；点缀色、胶带色、emoji 封面；图片 URL 或本地上传；即时创建标签
-- **设置**：导出 / 导入 JSON 备份、载入示例菜（番茄炒蛋、红烧肉、简易意面）、清空数据
+- **封面**：膳方卡片墙、搜索、标签/分类筛选、多种排序
+- **详情**：左右书页布局；食材勾选、步骤、评分、备忘、自由章节（功效 / 宜忌）；**烹饪模式**放大步骤
+- **编辑器**：高自由度——任意增删食材/步骤/章节；点缀色、胶带色、emoji 封面；图片 URL 或本地上传；即时化标签
+- **设置**：导出 / 导入 JSON、载入示例膳方、清空数据
+- **存储**：`listRecipes` / `getRecipe` / `saveRecipe` / `deleteRecipe` / `exportAll` / `importMerge`；`config.js` 切换 LocalStore ↔ RemoteStore（Supabase PostgREST）
 
 ## 本地打开
 
-任选其一：
-
 ```bash
-# 进入目录后起一个静态服务（推荐，避免 file:// 限制）
 cd recipe-journal
 python3 -m http.server 8765
 # 浏览器打开 http://localhost:8765
 ```
 
-或直接用浏览器打开 `index.html`（多数功能可用；部分浏览器对本地文件限制更严）。
-
-文件结构：
+或直接打开 `index.html`。
 
 ```
 recipe-journal/
-  index.html    # 页面结构
-  styles.css    # 手账视觉
-  app.js        # 逻辑与 localStorage
+  index.html    # 页面结构（先加载 config.js，再加载 app.js）
+  styles.css    # 药食同源手账视觉
+  app.js        # 逻辑与存储 API
+  config.js     # 后端配置（Supabase url + anonKey）
   assets/       # 预留静态资源
   README.md
 ```
 
-无需构建步骤，纯静态 HTML/CSS/JS。
+无需构建，纯静态 HTML/CSS/JS。
 
 ## 数据如何存储
 
-- 键名：`recipe-journal-v1`（localStorage）
-- 含 `schemaVersion`（当前为 `1`），便于以后迁移
-- 每道菜有随机 id、标题、封面（emoji / 图片）、点缀色、胶带、时间/份量/难度、标签、食材、步骤、备忘、自由章节、评分、上次烹饪日等
-- **换浏览器 / 清站点数据会丢失**，请先在「设置」里导出 JSON
+- **联网模式**（默认已配置）：Supabase REST；顶栏显示「联网共享 · 任何人可编辑」
+- **本地模式**：`localStorage` 键名 `bencao-shanlu-v1`；顶栏提示本地稿；清站点数据会丢失，请先导出 JSON
+- 首次打开若远端（或本地）列表为空，会自动写入 3 道示例膳方（按标题去重，不会重复灌入）
 
-## 部署到 GitHub Pages（稍后）
+## 示例膳方
 
-仓库建议放在账号 `xiezhihao891-arch` 下，例如仓库名 `recipe-journal`：
+1. 枸杞红枣茶  
+2. 山药薏米粥  
+3. 生姜红糖水  
 
-1. 将本目录内容推到仓库的 `main`（或 `gh-pages`）分支根目录，或 `/docs`
-2. GitHub → Settings → Pages → Source 选对应分支与文件夹
-3. 访问：`https://xiezhihao891-arch.github.io/recipe-journal/`
+每道含简要「功效 / 宜忌」自由章节，措辞为传统食养参考。
 
-注意：Pages 上每个访客的数据仍在**各自浏览器**的 localStorage，不会共享云端。
+## 主题说明
 
-## 给志豪的小提示
+- 字体：Ma Shan Zheng / ZCOOL XiaoWei（标题）+ Noto Sans SC（正文），经 Google Fonts CDN
+- 色板：宣纸米黄、墨色、青瓷绿、Muted 朱砂、赭石胶带
+- 装饰：和纸胶带、拍立得卡片、竹叶 SVG 淡纹
 
-- 标签输入框里打字后按 **回车** 添加贴纸
-- 详情页勾选食材会划掉，适合边做边勾
-- 图片上传请尽量小于约 500KB，以免撑爆 localStorage；大图建议用外链 URL
+## 部署说明
+
+GitHub Pages（`master`）：https://xiezhihao891-arch.github.io/recipe-journal/
 
 —
-Made as a warm paper journal for 志豪 ✿
+
+本草膳录 · 药食同源 · 共享食谱 · 非医疗建议

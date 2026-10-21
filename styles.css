@@ -1,31 +1,42 @@
 /* ============================================================
-   手账食谱 · Scrapbook Recipe Journal
-   Soft kraft paper, washi tape, polaroids, handwriting mix
+   本草膳录 · 药食同源共享食谱手账
+   Xuan/parchment, celadon sage, muted cinnabar, ink wash, bamboo
    ============================================================ */
 
 :root {
-  --paper: #f7f0e6;
-  --paper-dark: #efe4d4;
-  --paper-deep: #e8d9c4;
-  --ink: #3d3429;
-  --ink-soft: #6b5e4f;
-  --ink-mute: #9a8b7a;
-  --coral: #e07a5f;
-  --coral-soft: #f2b5a0;
-  --sage: #81b29a;
-  --sage-soft: #b8d4c6;
-  --sky: #7a9eb5;
-  --lavender: #9b8aa5;
-  --mustard: #d4a574;
-  --rose: #c97b84;
-  --cream: #fffdf8;
-  --white: #fffcf7;
-  --shadow: rgba(61, 52, 41, 0.12);
-  --shadow-strong: rgba(61, 52, 41, 0.22);
-  --tape-yellow: rgba(255, 220, 120, 0.55);
-  --tape-pink: rgba(255, 180, 190, 0.5);
-  --tape-mint: rgba(160, 220, 190, 0.5);
-  --tape-blue: rgba(160, 200, 230, 0.5);
+  /* Xuan / parchment paper */
+  --paper: #f3eee4;
+  --paper-dark: #e8e0d2;
+  --paper-deep: #d9cfbc;
+  /* Soft ink */
+  --ink: #2a2a28;
+  --ink-soft: #5a564c;
+  --ink-mute: #8a8376;
+  /* Muted cinnabar / vermillion (kept as --coral for compatibility) */
+  --coral: #b85a4a;
+  --coral-soft: #d4a094;
+  --cinnabar: #b85a4a;
+  --cinnabar-soft: #d4a094;
+  /* Celadon sage */
+  --sage: #7d9b8a;
+  --sage-soft: #b5c9bc;
+  --celadon: #7d9b8a;
+  --sky: #7a8f9e;
+  --lavender: #8a8494;
+  --mustard: #c4a574;
+  --ochre: #c4a574;
+  --rose: #a86b72;
+  --cream: #faf7f0;
+  --white: #fcfaf5;
+  --shadow: rgba(42, 42, 40, 0.10);
+  --shadow-strong: rgba(42, 42, 40, 0.20);
+  /* Washi / tape — herb-tinted */
+  --tape-yellow: rgba(196, 165, 116, 0.45);
+  --tape-pink: rgba(184, 90, 74, 0.28);
+  --tape-mint: rgba(125, 155, 138, 0.40);
+  --tape-blue: rgba(122, 143, 158, 0.40);
+  --tape-sage: rgba(125, 155, 138, 0.45);
+  --tape-celadon: rgba(125, 155, 138, 0.35);
   --radius: 4px;
   --font-hand: "Ma Shan Zheng", "ZCOOL XiaoWei", cursive;
   --font-title: "ZCOOL XiaoWei", "Ma Shan Zheng", serif;
@@ -46,8 +57,9 @@ body {
   color: var(--ink);
   background-color: var(--paper);
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-    linear-gradient(165deg, #f9f3ea 0%, #f3e8d8 45%, #efe0ce 100%);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='200' viewBox='0 0 120 200'%3E%3Cg fill='none' stroke='%237d9b8a' stroke-opacity='0.07' stroke-width='1.2'%3E%3Cpath d='M40 200 V40'/%3E%3Cpath d='M40 80 Q55 70 70 55'/%3E%3Cpath d='M40 110 Q25 95 12 80'/%3E%3Cpath d='M40 140 Q58 128 75 108'/%3E%3Cellipse cx='72' cy='52' rx='10' ry='5' transform='rotate(-25 72 52)' fill='%237d9b8a' fill-opacity='0.06' stroke='none'/%3E%3Cellipse cx='14' cy='78' rx='9' ry='4.5' transform='rotate(30 14 78)' fill='%237d9b8a' fill-opacity='0.06' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+    linear-gradient(168deg, #f7f3ea 0%, #f0e9db 42%, #e8e0d0 100%);
   background-attachment: fixed;
   min-height: 100dvh;
   line-height: 1.6;
@@ -81,7 +93,7 @@ ul, ol { list-style: none; }
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.85rem 0.25rem;
-  background: linear-gradient(180deg, rgba(247,240,230,0.96) 60%, rgba(247,240,230,0));
+  background: linear-gradient(180deg, rgba(243,238,228,0.96) 60%, rgba(243,238,228,0));
   backdrop-filter: blur(6px);
 }
 
@@ -142,9 +154,9 @@ ul, ol { list-style: none; }
 .btn-primary {
   background: var(--coral);
   color: var(--cream);
-  box-shadow: 0 3px 0 #c45f47, 0 4px 10px var(--shadow);
+  box-shadow: 0 3px 0 #944538, 0 4px 10px var(--shadow);
 }
-.btn-primary:hover { background: #d66b50; }
+.btn-primary:hover { background: #a64f40; }
 
 .btn-ghost {
   background: var(--cream);
@@ -157,9 +169,9 @@ ul, ol { list-style: none; }
 .btn-sage {
   background: var(--sage);
   color: var(--cream);
-  box-shadow: 0 3px 0 #5f927a;
+  box-shadow: 0 3px 0 #5f7d6c;
 }
-.btn-sage:hover { background: #6fa388; }
+.btn-sage:hover { background: #6d8b7a; }
 
 .btn-icon {
   width: 2.5rem;
@@ -210,7 +222,7 @@ ul, ol { list-style: none; }
   position: absolute;
   height: 28px;
   width: 88px;
-  background: var(--tape-pink);
+  background: var(--tape-sage);
   box-shadow: 0 1px 3px var(--shadow);
   transform: rotate(-8deg);
   top: -10px;
@@ -1078,4 +1090,49 @@ body.cooking-mode #bottom-nav { display: none; }
   #bottom-nav, .app-header, .detail-actions, .cook-exit { display: none !important; }
   body { background: white; }
   .page-panel { box-shadow: none; break-inside: avoid; }
+}
+
+
+/* ---- Local-mode banner ---- */
+.local-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--sage) 14%, var(--cream));
+  border-bottom: 1px solid var(--paper-deep);
+  text-align: center;
+  line-height: 1.4;
+}
+.local-banner[hidden] { display: none !important; }
+.local-banner-ico { flex-shrink: 0; }
+.local-banner.is-remote {
+  background: color-mix(in srgb, var(--sage) 22%, var(--cream));
+  color: var(--ink);
+}
+
+/* ---- Cover motif (bamboo / herb corner) ---- */
+.cover-motif {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.5rem;
+  width: 72px;
+  height: 96px;
+  opacity: 0.18;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 110'%3E%3Cg fill='none' stroke='%232a2a28' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M28 108 V18'/%3E%3Cpath d='M28 40 Q42 32 52 22'/%3E%3Cpath d='M28 58 Q16 48 8 36'/%3E%3Cpath d='M28 78 Q44 68 56 52'/%3E%3Cellipse cx='54' cy='20' rx='11' ry='5' transform='rotate(-28 54 20)' fill='%237d9b8a' stroke='none'/%3E%3Cellipse cx='8' cy='34' rx='10' ry='4.5' transform='rotate(32 8 34)' fill='%237d9b8a' stroke='none'/%3E%3Cellipse cx='58' cy='50' rx='10' ry='4.5' transform='rotate(-18 58 50)' fill='%237d9b8a' stroke='none'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.cover-tagline {
+  color: var(--ink-mute);
+  font-size: 0.82rem;
+  margin: -0.55rem 0 1rem;
+  max-width: 36em;
+}
+
+.cover-hero {
+  overflow: hidden;
 }
